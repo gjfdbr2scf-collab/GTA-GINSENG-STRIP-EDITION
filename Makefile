@@ -68,7 +68,6 @@ clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds
 
-else
 
 $(OUTPUT).nds: $(OUTPUT).elf
 

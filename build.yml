@@ -23,5 +23,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ginseng-strip-gta-nds
-          path: Ginseng_Strip_GTA/ginseng_strip_gta.nds
+          path: path: "*.nds"
           if-no-files-found: error

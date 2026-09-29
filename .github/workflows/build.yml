@@ -21,8 +21,9 @@ jobs:
         env:
   DEVKITARM: /opt/devkitpro/devkitARM
       - name: Upload Nintendo DS ROM
-        uses: actions/upload-artifact@v4
-        with:
-          name: ginseng-strip-gta-nds
-          path: Ginseng_Strip_GTA/ginseng_strip_gta.nds
-          if-no-files-found: error
+        uses: actions/upload-artifact@v4 
+        with:  
+          name:  ginseng-strip-gta-nds
+          path:  "*.nds"
+          if-no-files-found:error
+          

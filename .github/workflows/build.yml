@@ -18,7 +18,8 @@ jobs:
       - name: Build .nds
         working-directory: 
         run: make
-
+        env:
+  DEVKITARM: /opt/devkitpro/devkitARM
       - name: Upload Nintendo DS ROM
         uses: actions/upload-artifact@v4
         with:

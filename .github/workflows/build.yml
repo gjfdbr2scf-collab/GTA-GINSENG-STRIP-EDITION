@@ -15,11 +15,11 @@ jobs:
       - name: Check out project
         uses: actions/checkout@v4
 
-      - name:  name: Build .nds
+      - name: Build .nds
         
         run:   make    
         env: 
-           DEVKITARM: /opt/devkitpro/devkitARM
+          DEVKITARM: /opt/devkitpro/devkitARM
   
       - name:  Upload Nintendo DS ROM
         uses:  actions/upload-artifact@v4

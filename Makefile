@@ -38,7 +38,8 @@ NITRO :=
 
 ARCH := -march=armv5te -mtune=arm946e-s
 
-CFLAGS := -g -Wall -O2 -ffunction-sections -fdata-sections $(ARCH) $(INCLUDE) -DARM9
+CFLAGS := -g -Wall -O2 -ffunction-sections -fdata-sections $(ARCH)
+CFLAGS += $(INCLUDE) -DARM9
 
 CXXFLAGS := $(CFLAGS) -fno-rtti -fno-exceptions
 
@@ -74,11 +75,7 @@ else
 export LD := $(CXX)
 endif
 
-export OFILES_SOURCES := $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
-
-export OFILES := $(OFILES_SOURCES)
-
-export HFILES := $(foreach dir,$(INCLUDES),$(wildcard $(dir)/*.h))
+export OFILES := $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
 
 export INCLUDE := $(foreach dir,$(INCLUDES),-iquote $(CURDIR)/$(dir)) \
                   $(foreach dir,$(LIBDIRS),-I$(dir)/include) \
@@ -91,7 +88,7 @@ export LIBPATHS := $(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 all: $(BUILD)
 
 $(BUILD):
-	@mkdir -p $(BUILD)
+	@mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 clean:
@@ -100,17 +97,11 @@ clean:
 
 else
 
-#---------------------------------------------------------------------------------
-# Build targets inside build/
-#---------------------------------------------------------------------------------
-
 DEPENDS := $(OFILES:.o=.d)
 
 $(OUTPUT).nds: $(OUTPUT).elf
 
 $(OUTPUT).elf: $(OFILES)
-
-$(OFILES_SOURCES): $(HFILES)
 
 -include $(DEPENDS)
 

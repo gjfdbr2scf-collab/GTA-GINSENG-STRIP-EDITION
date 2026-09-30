@@ -11,7 +11,7 @@ endif
 include $(DEVKITARM)/ds_rules
 
 #---------------------------------------------------------------------------------
-# Project settings
+# Project
 #---------------------------------------------------------------------------------
 
 TARGET := ginseng_strip_gta
@@ -33,7 +33,7 @@ ICON :=
 NITRO :=
 
 #---------------------------------------------------------------------------------
-# Compiler settings
+# Compiler options
 #---------------------------------------------------------------------------------
 
 ARCH := -march=armv5te -mtune=arm946e-s
@@ -52,7 +52,7 @@ LIBS := -lnds9
 LIBDIRS := $(LIBNDS) $(PORTLIBS)
 
 #---------------------------------------------------------------------------------
-# Build system
+# Build
 #---------------------------------------------------------------------------------
 
 ifneq ($(BUILD),$(notdir $(CURDIR)))
@@ -69,13 +69,27 @@ CPPFILES := $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 
 SFILES := $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 
+#---------------------------------------------------------------------------------
+# Choose linker
+#---------------------------------------------------------------------------------
+
 ifeq ($(strip $(CPPFILES)),)
 export LD := $(CC)
 else
 export LD := $(CXX)
 endif
 
-export OFILES := $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+#---------------------------------------------------------------------------------
+# Object files
+#---------------------------------------------------------------------------------
+
+export OFILES := $(CPPFILES:.cpp=.o) \
+                 $(CFILES:.c=.o) \
+                 $(SFILES:.s=.o)
+
+#---------------------------------------------------------------------------------
+# Include directories
+#---------------------------------------------------------------------------------
 
 export INCLUDE := $(foreach dir,$(INCLUDES),-iquote $(CURDIR)/$(dir)) \
                   $(foreach dir,$(LIBDIRS),-I$(dir)/include) \
@@ -83,9 +97,11 @@ export INCLUDE := $(foreach dir,$(INCLUDES),-iquote $(CURDIR)/$(dir)) \
 
 export LIBPATHS := $(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: all clean
+#---------------------------------------------------------------------------------
+# Targets
+#---------------------------------------------------------------------------------
 
-all: $(BUILD)
+.PHONY: $(BUILD) clean
 
 $(BUILD):
 	@mkdir -p $@
@@ -97,12 +113,14 @@ clean:
 
 else
 
-DEPENDS := $(OFILES:.o=.d)
+#---------------------------------------------------------------------------------
+# Main build targets
+#---------------------------------------------------------------------------------
 
 $(OUTPUT).nds: $(OUTPUT).elf
 
 $(OUTPUT).elf: $(OFILES)
 
--include $(DEPENDS)
+-include $(DEPSDIR)/*.d
 
 endif

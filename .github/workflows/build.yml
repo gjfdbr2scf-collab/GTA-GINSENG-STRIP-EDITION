@@ -15,15 +15,16 @@ jobs:
       - name: Check out project
         uses: actions/checkout@v4
 
-      - name:  Build .nds
+      - name:  name: Build .nds
         
-        run: make
-        env:
-  DEVKITARM: /opt/devkitpro/devkitARM
-      - name: 
-        uses: 
+        run:   make    
+        env: 
+             
+  DEVKITARM:  /opt/devkitpro/devkitARM
+      - name:  Upload Nintendo DS ROM
+        uses:  actions/upload-artifact@v4
         with:  
-          name:  ginseng-strip-gta-nds
-          path:  "*.nds"
-          if-no-files-found:error
+          name:   ginseng-strip-gta-nds
+          path:   "*.nds"
+           if-no-files-found: error
           
